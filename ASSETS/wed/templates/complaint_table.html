@@ -1,0 +1,377 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha384-oD6dKd9zARok4O1C+JY9bhhjj4l6Ml2R8kBsn5j2Mo+n6juvCJfJxsug6z3bUzuoK" crossorigin="anonymous">
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <!--   <h1>Staff Registration</h1>-->
+                </div>
+                <div class="col-sm-6">
+                    
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements disabled -->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Manage User Complaints &emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;&emsp14;{{request.session.username}}</h3>
+                            
+                        </div>
+                        <br>
+                        <!-- /.card-header -->
+                        <div class="input-group">
+                            <div class="form-outline">
+                        <form method="get">
+                           
+                            <label for="search">Search:</label>
+                            <input type="text" name="search" id="search" value="{{ request.GET.search }}"
+                                   style="border: 1px solid #ccc; border-radius: 5px; padding: 5px; width: 200px;">
+                        </form>
+                    </div> 
+                </div>
+                      
+                        <div class="card-body">
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+      <tr>
+        <th>Name</th>
+        <th style="text-align: center;">Email id</th>
+        <th>Phone</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Status</th>
+        <th>Date n Time</th>
+        <th></th>
+        <th>Followed details</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for datas in data %}
+        <tr data-feed-id="{{ datas.feed_id }}" data-resolved-timestamp="{% if datas.status == 'Resolved' %}{{ datas.resolved_timestamp|date:"U" }}{% endif %}">
+
+        <td>
+          <div>
+            <!--<img
+                src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                alt=""
+                style="width: 45px; height: 45px"
+                class="rounded-circle"
+                />-->
+            <div>
+                {{datas.name}}
+            </div>
+          </div>
+        </td>
+        <td style="text-align: center;">
+            {{datas.email}}
+            <button class="copy-button btn btn-primary btn-sm" data-email="{{datas.email}}">
+                <i class="fas fa-clipboard"></i> Copy
+            </button>
+        </td>
+        <td style="text-align: center;">
+            {{datas.phone}}
+        </td>
+        <td>
+            {{datas.category}}
+        </td>
+        <td>
+            {% if datas.message|length > 10 %}
+                <a data-bs-toggle="modal" data-bs-target="#messageModal{{ datas.feed_id }}">
+                    {{ datas.message|slice:":10" }}...
+                </a>
+            {% else %}
+                {{ datas.message }}
+            {% endif %}
+            
+            <div class="modal fade" id="messageModal{{ datas.feed_id }}" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel{{ datas.feed_id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        
+                        <div class="modal-body">
+                            {{ datas.message }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            {% if datas.status == "Accepted" %}
+            <p class="badge rounded-pill bg-primary text-dark">Follow up</p>
+            {% elif datas.status == "Resolved" %}
+            <p class="badge rounded-pill bg-warning text-dark">{{datas.status}}</p>
+            {% elif datas.status == "Unopened" %}
+            <p class="badge rounded-pill bg-success text-dark">{{datas.status}}</p>
+            {% elif datas.status == "Followed" %}
+            <p class="badge rounded-pill bg-danger">{{datas.status}}</p>
+        {% endif %}
+      
+        </td>
+        <td>
+            {{ datas.date_time|date:"Y-m-d h:i:s A" }}
+
+        </td>
+        
+        <td class="status">
+    <!--class="badge rounded-pill bg-success"-->
+   
+            {% if datas.status == 'Accepted' %}
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#replyModal2{{ datas.feed_id }}">Follow up</a>
+                <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#replyModal1{{ datas.feed_id }}">Resolve</a>
+            
+            {% elif datas.status == 'Unopened' %}
+                <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#replyModal{{ datas.feed_id }}" style="text-decoration: none;">Accept</a>
+                {% elif datas.status == 'Followed' %}
+                <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#replyModal1{{ datas.feed_id }}">Resolve</a>
+                {% elif datas.status == 'Resolved' %}
+               Completed
+       
+            {% else %}
+           Completed
+           
+            {% endif %}
+        </td>
+        <td>
+            {% if datas.status == "Accepted" %}<p class="staff-name">{{ request.session.username }}</p>
+            {% elif datas.status == "Followed"%}
+            
+            <a data-bs-toggle="modal" data-bs-target="#messageModal1{{ datas.feed_id }}">
+                {{ datas.reply|slice:":6" }}...
+            </a><p class="staff-name">Details added by : {{ request.session.username }}
+                {% elif datas.status == "Resolved" %}
+            
+                <a data-bs-toggle="modal" data-bs-target="#messageModal2{{ datas.feed_id }}">
+                    {{ datas.reply|slice:":6" }}...
+                </a><p class="staff-name">Details added by : {{ request.session.username }}
+           
+        {% endif %}
+        
+        <div class="modal fade" id="messageModal1{{ datas.feed_id }}" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel{{ datas.feed_id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    
+                    <div class="modal-body">
+                        {{ datas.reply }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="messageModal2{{ datas.feed_id }}" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel{{ datas.feed_id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    
+                    <div class="modal-body">
+                        {{ datas.reply }}
+                    </div>
+                </div>
+            </div>
+        </div>
+           </td>
+      </tr>
+      <div class="modal fade" id="replyModal{{ datas.feed_id }}" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel{{ datas.feed_id }}" aria-hidden="true">
+      
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="replyModalLabel{{ forloop.counter }}">Accept the complaint</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'resolve_complaint' feed_id=datas.feed_id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <!--<input type="text" class="form-control" id="replyText{{ forloop.counter }}" name="staff" value="{{request.session.username}}"/>-->
+                          </div>
+                    
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="replyModal1{{ datas.feed_id }}" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel{{ datas.feed_id }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="replyModalLabel{{ forloop.counter }}">Close the issue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                       
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add reply form or input field here -->
+                    <form action="{% url 'solved' feed_id=datas.feed_id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                           
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="replyModal2{{ datas.feed_id }}" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel{{ datas.feed_id }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="replyModalLabel{{ forloop.counter }}">Add Reply</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add reply form or input field here -->
+                    <form action="{% url 'follow' feed_id=datas.feed_id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="message" class="col-form-label">Add details</label>
+                      <textarea class="form-control" name="replyText" id="replyText{{ forloop.counter }}" cols="30" rows="4"  placeholder="Write here"></textarea>
+                     
+                    
+                        </div><br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<!-- /.card-body -->
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<style>
+    .bg-warning {
+        --bs-bg-opacity: 0.3;
+        background-color: rgba(var(--bs-warning-rgb),var(--bs-bg-opacity))!important;
+    }
+    .bg-primary{
+        --bs-bg-opacity: 0.3;
+        background-color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important;
+    }
+    .bg-success {
+        --bs-bg-opacity: 0.6;
+        background-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity))!important;
+    }
+    .bg-danger {
+        --bs-bg-opacity: 0.6;
+        background-color: rgba(var(--bs-danger-rgb),var(--bs-bg-opacity))!important;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .accepted-row {
+      position: relative;
+      animation: shake 0.8s infinite;
+      background-color: rgba(255, 255, 153, 0.5); /* Light yellow color with opacity */
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    .bg-danger-indication {
+        position: relative;
+    }
+    
+    .bg-danger-indication::after {
+        content: "Following"; 
+        font-size: x-small;
+        position: absolute;
+        top: 20px; 
+        left: 90px; 
+        background-color: #007bff;
+        color: #fff;
+        padding: 4px 6px;
+        border-radius: 50px;
+        cursor: pointer;
+        z-index: 1; 
+    }
+    .bg-danger-row {
+        background-color: #d3f0d0;
+    }
+    
+</style>
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            var acceptedRows = $("tbody").find("tr:has(.bg-primary)");
+            $("tbody").prepend(acceptedRows);
+            acceptedRows.addClass("accepted-row");
+            
+            // Add an indication to rows with bg-success
+            var dangerRows = $("tbody").find("tr:has(.bg-danger)");
+
+            dangerRows.each(function() {
+                var firstColumn = $(this).find("td:first-child");
+                firstColumn.addClass("bg-danger-indication");
+            });
+        }, 172800000); 
+    
+        function deleteWarningRows() {
+            $.ajax({
+                url: "/delete_warning_rows/",
+                method: "GET",
+                success: function(data) {
+                    console.log(data.message);
+                    // If the deletion was successful, remove the rows from the table
+                    if (data.message.includes("deleted successfully.")) {
+                        var warningRows = $("tbody").find("tr:has(.bg-warning)");
+                        warningRows.remove();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting Warning rows:", error);
+                }
+            });
+        }
+        // Set an interval to call the deleteWarningRows function every 30 seconds
+        setInterval(deleteWarningRows, 2147483647); // 30 seconds = 30,000 milliseconds
+    });
+    
+    const copyButtons = document.querySelectorAll('.copy-button');
+
+    // Add a click event listener to each button
+    copyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Get the email address from the data-email attribute
+            const email = button.getAttribute('data-email');
+
+            // Create a temporary input element to copy the email address
+            const tempInput = document.createElement('input');
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+
+            // Select the text in the input element
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text to the clipboard
+            document.execCommand('copy');
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+
+            // You can also provide visual feedback to the user (e.g., change button text)
+            button.textContent = 'Copied!';
+        });
+    });
+   
+</script>
