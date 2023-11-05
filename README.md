@@ -22,11 +22,6 @@ The Django Feedback Template with Database is a robust and versatile web applica
 - Responsive design for optimal viewing on different screen sizes.
 - Built on Django, this template is highly scalable and can handle a growing volume of feedback submissions while maintaining optimal performance.
 
-## Demo
-
-You can access the live demo of the website at [here](https://vishnu1100.github.io/django_FLOWERSHOP_APP/)
-
-
 ## Technologies Used
 
 - HTML5
@@ -63,7 +58,7 @@ To run this website locally, follow these steps:
 1. Clone this repository to your local machine using the following command:
 
    ```bash
-   git clone https://github.com/vishnu1100/django_FLOWERSHOP_APP.git
+   git clone https://github.com/vishnu1100/FEEDBACK_TEMPLATE_WITH_DATABASE.git
    ```
 
 ## Contributing
