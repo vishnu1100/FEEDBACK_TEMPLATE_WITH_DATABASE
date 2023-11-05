@@ -20,6 +20,7 @@ The Django Feedback Template with Database is a robust and versatile web applica
 - The heart of the system is a powerful and reliable database, which stores feedback securely. This database is built using Django's  system, making it easy to work with and query the data.
 - Responsive design for optimal viewing on different screen sizes.
 - Built on Django, this template is highly scalable and can handle a growing volume of feedback submissions while maintaining optimal performance.
+- MANY SURPRISES INSIDE :) 
 
 ## Technologies Used
 
